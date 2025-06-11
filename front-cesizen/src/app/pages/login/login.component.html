@@ -1,0 +1,9 @@
+<h1>Connexion</h1>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>Email : <input formControlName="email" /></label>
+  <label>Mot de passe : <input type="password" formControlName="password" /></label>
+  <button type="submit">Se connecter</button>
+</form>
+
+<p *ngIf="error" style="color: red;">{{ error }}</p>

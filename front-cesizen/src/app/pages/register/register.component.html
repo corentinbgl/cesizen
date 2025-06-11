@@ -1,0 +1,26 @@
+<h1>Inscription</h1>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>Email :
+    <input formControlName="email" />
+  </label>
+  @if(form.get('email')?.touched && form.get('email')?.invalid){
+    <div style="color: red">
+      @if(form.get('email')?.errors?.['required']){
+        <div>L'adresse email est requise.</div>
+      }
+      @if(form.get('email')?.errors?.['email']){
+        <div>Veuillez entrer une adresse email valide.</div>
+      }
+    </div>
+  }
+
+  <label>Mot de passe :
+    <input type="password" formControlName="password" />
+  </label>
+
+  <button type="submit">S'inscrire</button>
+</form>
+
+<p *ngIf="message" style="color: green;">{{ message }}</p>
+<p *ngIf="error" style="color: red;">{{ error }}</p>

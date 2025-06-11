@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import infoRoutes from './routes/information.route';
+import stressRoutes from './routes/stress.routes';
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 
 app.use('/infos', infoRoutes)
+
+app.use('/stress', stressRoutes)
 
 app.get('/', (_req, res) => {
   res.send('API CESIZen en TypeScript est en ligne');

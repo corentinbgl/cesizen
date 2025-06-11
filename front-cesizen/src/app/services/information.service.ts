@@ -26,4 +26,22 @@ export class InformationService {
   getBySlug(slug: string): Observable<Information> {
     return this.http.get<Information>(`${this.apiUrl}/${slug}`);
   }
+
+  delete(id: number): Observable<void> {
+  return this.http.delete<void>(`${this.apiUrl}/${id}`);
+}
+
+create(data: Partial<Information>): Observable<Information> {
+  return this.http.post<Information>(this.apiUrl, data);
+}
+
+update(id: number, data: Partial<Information>): Observable<Information> {
+  return this.http.patch<Information>(`${this.apiUrl}/${id}`, data);
+}
+
+getById(id: number): Observable<Information> {
+  return this.http.get<Information>(`${this.apiUrl}/${id}`);
+}
+
+
 }

@@ -1,1 +1,13 @@
-<p>information-list works!</p>
+<div class="container">
+  <h1>Informations</h1>
+
+  <div class="card-grid">
+    @for(info of infos; track $index){
+      <div class="card">
+        <h3>{{ info.title }}</h3>
+        <p class="date">Mis à jour : {{ info.updatedAt }}</p>
+        <a [routerLink]="['/informations', info.slug]" class="read-more">Lire plus</a>
+      </div>
+    }
+  </div>
+</div>

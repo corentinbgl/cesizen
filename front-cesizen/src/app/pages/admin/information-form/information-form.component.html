@@ -1,0 +1,20 @@
+<h2>{{ isEdit ? 'Modifier' : 'Créer' }} une page d'information</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>
+    Titre :
+    <input formControlName="title" />
+  </label>
+
+  <label>
+    Slug :
+    <input formControlName="slug" />
+  </label>
+
+  <label>
+    Contenu :
+    <textarea formControlName="content" rows="10"></textarea>
+  </label>
+
+  <button type="submit">{{ isEdit ? 'Mettre à jour' : 'Créer' }}</button>
+</form>

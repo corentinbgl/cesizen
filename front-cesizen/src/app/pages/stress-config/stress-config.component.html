@@ -1,0 +1,27 @@
+<h2>Configurer le questionnaire de stress</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input formControlName="label" placeholder="Libellé de l’événement" />
+  <input type="number" formControlName="points" placeholder="Points" />
+  <button type="submit">{{ editingEvent ? 'Modifier' : 'Ajouter' }}</button>
+  @if(editingEvent){
+    <button type="button" (click)="resetForm()">Annuler</button>
+  }
+</form>
+
+<ul>
+  @for(event of events; track $index){
+    <li>
+      {{event.label}} ({{event.points}} pts)
+      <button (click)="delete(event.id)"></button>
+    </li>
+  }
+</ul>
+
+@if(message){
+  <p style="color: green"> {{message}}</p>
+}
+@if(error){
+  <p style="color: red"> {{error}}</p>
+}
+

@@ -1,0 +1,15 @@
+<h2>Gérer mon compte</h2>
+
+<form [formGroup]="form" (ngSubmit)="onUpdatePassword()">
+  <label>Nouveau mot de passe :</label>
+  <input type="password" formControlName="newPassword" />
+  <button type="submit">Mettre à jour</button>
+</form>
+
+<button (click)="onDeleteAccount()" style="margin-top: 20px; color: red;">
+  Supprimer mon compte
+</button>
+
+@if(message){<p style="color: green;">{{ message }}</p>}
+@if(error){<p style="color: red;">{{ error }}</p>}
+

@@ -1,0 +1,32 @@
+<h2>Gestion des utilisateurs</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Rôle</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(user of users; track $index){
+      <tr>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+      <td>
+        <button (click)="onChangeRole(user)">Changer rôle</button>
+        <button (click)="onDelete(user.id)">Supprimer</button>
+      </td>
+    </tr>
+    }
+
+  </tbody>
+</table>
+
+@if(message){
+  <p style="color: green;">{{ message }}</p>
+}
+@if(error){
+  <p style="color: red;">{{ error }}</p>
+}
+

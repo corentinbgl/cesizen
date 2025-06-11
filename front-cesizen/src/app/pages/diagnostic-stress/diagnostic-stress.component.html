@@ -1,0 +1,18 @@
+<h1>Questionnaire de stress Holmes-Rahe</h1>
+
+<form (ngSubmit)="submit()">
+  <div *ngFor="let event of events">
+    <label>
+      <input type="checkbox" [value]="event.id" (change)="toggle(event.id)" />
+      {{ event.label }} ({{ event.points }} pts)
+    </label>
+  </div>
+
+  <button type="submit">Calculer mon score</button>
+</form>
+
+<div *ngIf="result">
+  <h2>Résultat</h2>
+  <p>Score total : {{ result.score }}</p>
+  <p>Niveau de stress : <strong>{{ result.level }}</strong></p>
+</div>

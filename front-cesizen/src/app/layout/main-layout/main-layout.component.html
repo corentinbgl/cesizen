@@ -1,6 +1,29 @@
 <nav class="navbar">
   <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
-  <a routerLink="/informations/stress" routerLinkActive="active">Exemple page</a>
+  <a routerLink="/diagnostic-stress" routerLinkActive="active">Diagnostic</a>
+  @if(auth.isAdmin()){
+    <a routerLink="/admin/informations" routerLinkActive="active">Admin Infos</a>
+    <a routerLink="/admin/stress-config" routerLinkActive="active">Config Diagnostic</a>
+  }
+
+
+ <span style="margin-left:auto;">
+  @if (auth.isLoggedIn()) {
+    <span>
+      Connecté en tant que {{ auth.getUser()?.email }} |
+      <a href="#" (click)="logout()">Déconnexion</a> |
+      <a routerLink="/account">Gestion du compte</a>
+    </span>
+    <nav>
+
+</nav>
+
+
+  } @else {
+    <a routerLink="/login" routerLinkActive="active">Connexion</a> |
+    <a routerLink="/register" routerLinkActive="active">Inscription</a>  }
+</span>
+
 </nav>
 
 <hr />

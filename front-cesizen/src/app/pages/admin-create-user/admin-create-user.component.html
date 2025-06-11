@@ -1,0 +1,19 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>Email : <input formControlName="email" /></label><br>
+  <label>Mot de passe : <input type="password" formControlName="password" /></label><br>
+  <label>Rôle :
+    <select formControlName="role">
+      <option value="user">Utilisateur</option>
+      <option value="admin">Administrateur</option>
+    </select>
+  </label><br>
+  <button type="submit">Créer</button>
+</form>
+
+@if(message ){
+  <p style="color: green;">{{ message }}</p>
+}
+@if(error ){
+  <p style="color: red;">{{ error }}</p>
+}
+

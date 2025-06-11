@@ -1,1 +1,89 @@
-/* You can add global styles to this file, and also import other style files */
+// Couleurs République Française 🇫🇷
+$blue-republique: #0055a4;
+$white-republique: #ffffff;
+$red-republique: #ef4135;
+$gray-bg: #f9f9f9;
+$gray-text: #333;
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: $gray-bg;
+  color: $gray-text;
+}
+
+h1, h2, h3 {
+  color: $blue-republique;
+}
+
+a {
+  color: $blue-republique;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Layout de base
+.main {
+  margin: auto;
+  padding: 2rem 1rem;
+}
+
+.navbar {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  background: linear-gradient(90deg, $blue-republique, $white-republique, $red-republique);
+  padding: 1rem 2rem;
+
+  a {
+    color: $gray-text;
+    font-weight: bold;
+
+    &.active {
+      border-bottom: 2px solid $blue-republique;
+    }
+  }
+
+  span {
+    margin-left: auto;
+    font-size: 0.9rem;
+  }
+}
+
+button {
+  background-color: $blue-republique;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    background-color: darken($blue-republique, 10%);
+  }
+}
+
+input, textarea {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+form {
+  margin-top: 1rem;
+}
