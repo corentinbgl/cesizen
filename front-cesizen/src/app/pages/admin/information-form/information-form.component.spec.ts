@@ -84,6 +84,15 @@ describe('InformationFormComponent with id', () => {
     infoServiceSpy = jasmine.createSpyObj('InformationService', ['getById', 'create', 'update']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
+     infoServiceSpy.getById.and.returnValue(of({
+    id: 1,
+    title: 'Init',
+    slug: 'init',
+    content: 'Texte',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  }));
+
     await TestBed.configureTestingModule({
       imports: [InformationFormComponent, ReactiveFormsModule],
       providers: [
@@ -108,25 +117,29 @@ describe('InformationFormComponent with id', () => {
   });
 
   it('should patch value from getById if in edit mode on init', () => {
-    const mockData: Information = {
-      id: 1,
-      title: 'Init',
-      slug: 'init',
-      content: 'Texte',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+  const mockData: Information = {
+    id: 1,
+    title: 'Init',
+    slug: 'init',
+    content: 'Texte',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
 
-    infoServiceSpy.getById.and.returnValue(of(mockData));
-    component.ngOnInit();
+  infoServiceSpy.getById.and.returnValue(of(mockData)); // ⬅️ avant detectChanges
 
-    expect(infoServiceSpy.getById).toHaveBeenCalledWith(1);
-    expect(component.form.value).toEqual({
-      title: 'Init',
-      slug: 'init',
-      content: 'Texte'
-    });
+  fixture = TestBed.createComponent(InformationFormComponent);
+  component = fixture.componentInstance;
+  fixture.detectChanges(); // appelle ngOnInit()
+
+  expect(infoServiceSpy.getById).toHaveBeenCalledWith(1);
+  expect(component.form.value).toEqual({
+    title: 'Init',
+    slug: 'init',
+    content: 'Texte'
   });
+});
+
 
   it('should call update if edit mode is true', () => {
     component.isEdit = true;

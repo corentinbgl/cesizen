@@ -26,8 +26,10 @@ export class RegisterComponent {
   ) {}
 
   onSubmit() {
-    if (this.form.invalid) console.error('Form invalide', this.form.errors);
-
+     if (this.form.invalid) {
+    console.error('Form invalide', this.form.errors); // ⬅️ requis par ton test
+    return;
+  }
 
 
     this.authService.registerAndLogin(this.form.value as {email: string , password: string}).subscribe({

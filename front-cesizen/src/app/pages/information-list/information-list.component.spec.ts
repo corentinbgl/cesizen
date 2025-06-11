@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { InformationListComponent } from './information-list.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('InformationListComponent', () => {
   let component: InformationListComponent;
@@ -8,9 +8,11 @@ describe('InformationListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InformationListComponent]
-    })
-    .compileComponents();
+      imports: [
+        InformationListComponent,         // ✅ composant standalone
+        HttpClientTestingModule           // ✅ remplace HttpClient
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(InformationListComponent);
     component = fixture.componentInstance;

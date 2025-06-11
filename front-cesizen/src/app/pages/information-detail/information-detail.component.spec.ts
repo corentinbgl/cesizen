@@ -1,23 +1,42 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Information, InformationService } from '../../services/information.service';
+import { CommonModule } from '@angular/common';
 
-import { InformationDetailComponent } from './information-detail.component';
+@Component({
+  selector: 'app-information-detail',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './information-detail.component.html',
+  styleUrl: './information-detail.component.scss'
+})
+export class InformationDetailComponent implements OnInit {
+  info: Information | null = null; // Initialize to null
+  loading = true;
+  error = '';
 
-describe('InformationDetailComponent', () => {
-  let component: InformationDetailComponent;
-  let fixture: ComponentFixture<InformationDetailComponent>;
+  constructor(
+    private readonly route: ActivatedRoute,
+    private infoService: InformationService
+  ) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [InformationDetailComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(InformationDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  ngOnInit(): void {
+    const slug = this.route.snapshot.paramMap.get('slug');
+    if (slug) {
+      this.infoService.getBySlug(slug).subscribe({
+        next: (data) => {
+          this.info = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Failed to load information';
+          this.loading = false;
+          console.error('Error loading information:', err);
+        }
+      });
+    } else {
+      this.loading = false;
+      this.error = 'No slug provided';
+    }
+  }
+}
