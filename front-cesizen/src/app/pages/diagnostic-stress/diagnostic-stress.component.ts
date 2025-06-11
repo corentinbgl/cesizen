@@ -7,7 +7,8 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   selector: 'app-diagnostic-stress',
   imports: [CommonModule, FormsModule],
-  templateUrl: './diagnostic-stress.component.html'
+  templateUrl: './diagnostic-stress.component.html',
+  styleUrl: './diagnostic-stress.component.scss',
 })
 export class DiagnosticStressComponent implements OnInit {
   events: StressEvent[] = [];
