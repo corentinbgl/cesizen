@@ -10,6 +10,7 @@ import { deleteAccount } from '../../../../back-cesizen/src/controllers/auth.con
 export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';
   private tokenKey = 'token';
+  private stress = 'http://localhost:3000/stress';
 
   constructor(private http: HttpClient) {}
 
@@ -75,6 +76,7 @@ export class AuthService {
   }
 
   getAllUsers(): Observable<any> {
+    console.log(this.getToken());
   return this.http.get(`${this.apiUrl}/admin/users`, {
     headers: { Authorization: `Bearer ${this.getToken()}` }
   });
@@ -93,13 +95,13 @@ deleteUser(userId: string): Observable<any> {
 }
 
 createStressEvent(event: { label: string; points: number }): Observable<any> {
-  return this.http.post(`${this.apiUrl}/admin/stress`, event, {
+  return this.http.post(`${this.stress}/admin/stress`, event, {
     headers: { Authorization: `Bearer ${this.getToken()}` }
   });
 }
 
 deleteStressEvent(id: number): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/admin/stress/${id}`, {
+  return this.http.delete(`${this.stress}/admin/stress/${id}`, {
     headers: { Authorization: `Bearer ${this.getToken()}` }
   });
 }

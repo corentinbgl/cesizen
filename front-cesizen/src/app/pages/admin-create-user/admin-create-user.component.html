@@ -1,19 +1,33 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>Email : <input formControlName="email" /></label><br>
-  <label>Mot de passe : <input type="password" formControlName="password" /></label><br>
-  <label>Rôle :
-    <select formControlName="role">
-      <option value="user">Utilisateur</option>
-      <option value="admin">Administrateur</option>
-    </select>
-  </label><br>
-  <button type="submit">Créer</button>
-</form>
+<div class="create-user-container">
+  <h2>Créer un utilisateur</h2>
 
-@if(message ){
-  <p style="color: green;">{{ message }}</p>
-}
-@if(error ){
-  <p style="color: red;">{{ error }}</p>
-}
+  <form class="create-user-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div>
+      <label for="email">Email :</label>
+      <input type="email" id="email" formControlName="email" />
+    </div>
 
+    <div>
+      <label for="password">Mot de passe :</label>
+      <input type="password" id="password" formControlName="password" />
+    </div>
+
+    <div>
+      <label for="role">Rôle :</label>
+      <select id="role" formControlName="role">
+        <option value="user">Utilisateur</option>
+        <option value="admin">Administrateur</option>
+      </select>
+    </div>
+
+    <button class="btn-create" type="submit">Créer</button>
+  </form>
+
+  @if(message) {
+    <div class="message-card message-success">{{ message }}</div>
+  }
+
+  @if(error) {
+    <div class="message-card message-error">{{ error }}</div>
+  }
+</div>

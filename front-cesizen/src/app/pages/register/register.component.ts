@@ -8,7 +8,8 @@ import { AuthService } from '../../services/auth.service'; // adapte le chemin s
   standalone: true,
   selector: 'app-register',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './register.component.html'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
   form = this.fb.group({

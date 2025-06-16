@@ -1,27 +1,81 @@
-<h2>Configurer le questionnaire de stress</h2>
+<div class="config-container">
+  <h2>Configurer le questionnaire de stress</h2>
 
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <input formControlName="label" placeholder="Libellé de l’événement" />
-  <input type="number" formControlName="points" placeholder="Points" />
-  <button type="submit">{{ editingEvent ? 'Modifier' : 'Ajouter' }}</button>
-  @if(editingEvent){
-    <button type="button" (click)="resetForm()">Annuler</button>
+  <!-- Messages -->
+  @if(message){
+    <div class="message-card message-success">
+      {{message}}
+    </div>
   }
-</form>
-
-<ul>
-  @for(event of events; track $index){
-    <li>
-      {{event.label}} ({{event.points}} pts)
-      <button (click)="delete(event.id)"></button>
-    </li>
+  @if(error){
+    <div class="message-card message-error">
+      {{error}}
+    </div>
   }
-</ul>
 
-@if(message){
-  <p style="color: green"> {{message}}</p>
-}
-@if(error){
-  <p style="color: red"> {{error}}</p>
-}
+  <!-- Formulaire d'ajout/modification -->
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="inline-form">
+      <div class="form-group">
+        <label for="label">Libellé de l'événement</label>
+        <input
+          id="label"
+          formControlName="label"
+          placeholder="Ex: Divorce, Licenciement..."
+        />
+      </div>
 
+      <div class="form-group">
+        <label for="points">Points de stress</label>
+        <input
+          id="points"
+          type="number"
+          formControlName="points"
+          placeholder="0-100"
+          min="0"
+          max="100"
+        />
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary">
+          Ajouter
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Liste des événements -->
+  <div class="events-card">
+    <h3>Événements configurés ({{ events.length }})</h3>
+
+    @if(events.length === 0) {
+      <div class="empty-state">
+        <p>Aucun événement configuré</p>
+        <small>Commencez par ajouter votre premier événement de stress</small>
+      </div>
+    } @else {
+      <ul class="events-list">
+        @for(event of events; track $index){
+          <li class="event-item">
+            <div class="event-info">
+              <div class="event-label">{{event.label}}</div>
+              <div class="event-points">
+                <strong>{{event.points}}</strong> points de stress
+              </div>
+            </div>
+            <div class="action-buttons">
+              <button
+                class="btn btn-sm btn-delete"
+                (click)="delete(event.id)"
+                title="Supprimer cet événement"
+              >
+                Supprimer
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

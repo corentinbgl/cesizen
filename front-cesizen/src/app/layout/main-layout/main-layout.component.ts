@@ -13,6 +13,9 @@ import { CommonModule } from '@angular/common';
 export class MainLayoutComponent {
   constructor(public auth: AuthService) {}
 
+  menuOpen = false;
+
+
   logout() {
     this.auth.logout();
     location.reload();

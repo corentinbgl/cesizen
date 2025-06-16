@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../utils/prisma';
+import { logAction } from '../utils/log';
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -28,7 +29,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { role: true }
+    });
+
     if (!user) {
       res.status(404).json({ message: 'Utilisateur non trouvé' });
       return;
@@ -40,9 +45,15 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env['JWT_SECRET'] || 'secret', {
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role?.name }, process.env['JWT_SECRET'] || 'secret', {
       expiresIn: '1h',
     });
+
+    await logAction({
+      userId: user.id,
+      action: 'login',
+      message: `Utilisateur ${user.email} connecté`
+    })
 
     res.json({ message: 'Connexion réussie', token });
   } catch (error) {
@@ -93,9 +104,20 @@ export const createUserByAdmin = async (req: Request, res: Response): Promise<vo
     }
 
     const hashed = await bcrypt.hash(password, 10);
-    await prisma.user.create({
-      data: { email, password: hashed, role }
-    });
+    const roleRecord = await prisma.role.findUnique({ where: { name: role } });
+
+if (!roleRecord) {
+  res.status(400).json({ message: 'Rôle inconnu' });
+  return;
+}
+
+await prisma.user.create({
+  data: {
+    email,
+    password: hashed,
+    roleId: roleRecord.id
+  }
+});
 
     res.status(201).json({ message: 'Utilisateur créé avec succès' });
   } catch (error) {
@@ -122,9 +144,22 @@ export const updateUserRole = async (req: Request, res: Response): Promise<void>
   try {
     const { userId, role } = req.body;
 
-    await prisma.user.update({
-      where: { id: userId },
-      data: { role }
+    const roleRecord = await prisma.role.findUnique({ where: { name: role } });
+
+if (!roleRecord) {
+  res.status(400).json({ message: 'Rôle inconnu' });
+  return;
+}
+
+await prisma.user.update({
+  where: { id: userId },
+  data: { roleId: roleRecord.id }
+});
+
+    await logAction({
+      userId: userId,
+      action: 'update_role',
+      message: `Rôle de l'utilisateur ${userId} mis à jour vers ${role}`
     });
 
     res.json({ message: 'Rôle mis à jour' });

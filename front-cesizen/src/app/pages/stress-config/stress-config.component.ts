@@ -6,6 +6,7 @@ import { StressService } from '../../services/stress.service';
 @Component({
   selector: 'app-stress-config',
   templateUrl: './stress-config.component.html',
+  styleUrl: './stress-config.component.scss',
   standalone: true,
   imports: [ReactiveFormsModule]
 })

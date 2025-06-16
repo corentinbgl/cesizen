@@ -1,32 +1,86 @@
-<h2>Gestion des utilisateurs</h2>
+<div class="users-container">
+  <h2>Gestion des utilisateurs</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Email</th>
-      <th>Rôle</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for(user of users; track $index){
-      <tr>
-      <td>{{ user.email }}</td>
-      <td>{{ user.role }}</td>
-      <td>
-        <button (click)="onChangeRole(user)">Changer rôle</button>
-        <button (click)="onDelete(user.id)">Supprimer</button>
-      </td>
-    </tr>
+  <!-- Bouton créer utilisateur -->
+  <div class="create-user-container">
+    <button class="btn btn-create-user" (click)="onCreateUser()">
+      + Créer un utilisateur
+    </button>
+  </div>
+
+  <!-- Messages -->
+  @if(message){
+    <div class="message-card message-success">
+      {{ message }}
+    </div>
+  }
+  @if(error){
+    <div class="message-card message-error">
+      {{ error }}
+    </div>
+  }
+
+  <!-- Statistiques -->
+  <div class="stats-card">
+    <div class="stats-number">{{ users.length }}</div>
+    <div class="stats-label">Utilisateur{{ users.length > 1 ? 's' : '' }} total{{ users.length > 1 ? 'aux' : '' }}</div>
+  </div>
+
+  <!-- Tableau des utilisateurs -->
+  <div class="table-card">
+    @if(users.length === 0) {
+      <div class="empty-state">
+        <h3>Aucun utilisateur</h3>
+        <p>Il n'y a actuellement aucun utilisateur dans le système.</p>
+        <small>Les nouveaux utilisateurs apparaîtront ici après leur inscription.</small>
+      </div>
+    } @else {
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(user of users; track $index){
+            <tr>
+              <td>
+                <span class="user-email">{{ user.email }}</span>
+              </td>
+              <td>
+                <span class="role-badge"
+                      [ngClass]="{
+                        'role-admin': user.role.name === 'admin',
+                        'role-user': user.role.name === 'user',
+                        'role-moderator': user.role.name === 'moderator'
+                      }">
+                  {{ user.role.name }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <div class="action-buttons">
+                  <button
+                    class="btn btn-change-role"
+                    (click)="onChangeRole(user)"
+                    title="Changer le rôle de cet utilisateur"
+                  >
+                    Changer rôle
+                  </button>
+                  <button
+                    class="btn btn-delete"
+                    (click)="onDelete(user.id)"
+                    title="Supprimer cet utilisateur"
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     }
-
-  </tbody>
-</table>
-
-@if(message){
-  <p style="color: green;">{{ message }}</p>
-}
-@if(error){
-  <p style="color: red;">{{ error }}</p>
-}
-
+  </div>
+</div>

@@ -1,29 +1,25 @@
 <nav class="navbar">
-  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
-  <a routerLink="/diagnostic-stress" routerLinkActive="active">Diagnostic</a>
-  @if(auth.isAdmin()){
-    <a routerLink="/admin/informations" routerLinkActive="active">Admin Infos</a>
-    <a routerLink="/admin/stress-config" routerLinkActive="active">Config Diagnostic</a>
-  }
+  <button class="burger" (click)="menuOpen = !menuOpen">☰</button>
 
+  <div class="nav-links" [class.show]="menuOpen">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+    <a routerLink="/diagnostic-stress" routerLinkActive="active">Diagnostic</a>
 
- <span style="margin-left:auto;">
-  @if (auth.isLoggedIn()) {
-    <span>
+    <a *ngIf="auth.isAdmin()" routerLink="/admin/informations" routerLinkActive="active">Admin Infos</a>
+    <a *ngIf="auth.isAdmin()" routerLink="/admin/stress-config" routerLinkActive="active">Config Diagnostic</a>
+    <a *ngIf="auth.isAdmin()" routerLink="/admin/users" routerLinkActive="active">Gestion utilisateurs</a>
+
+    <span class="user-info" *ngIf="auth.isLoggedIn(); else guestLinks">
       Connecté en tant que {{ auth.getUser()?.email }} |
       <a href="#" (click)="logout()">Déconnexion</a> |
       <a routerLink="/account">Gestion du compte</a>
     </span>
-    <nav>
 
-</nav>
-
-
-  } @else {
-    <a routerLink="/login" routerLinkActive="active">Connexion</a> |
-    <a routerLink="/register" routerLinkActive="active">Inscription</a>  }
-</span>
-
+    <ng-template #guestLinks>
+      <a routerLink="/login" routerLinkActive="active">Connexion</a> |
+      <a routerLink="/register" routerLinkActive="active">Inscription</a>
+    </ng-template>
+  </div>
 </nav>
 
 <hr />

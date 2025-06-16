@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   selector: 'app-login',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   form = this.fb.group({

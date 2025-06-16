@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-admin-create-user',
   templateUrl: './admin-create-user.component.html',
+  styleUrl: './admin-create-user.component.scss',
   standalone: true,
   imports: [ReactiveFormsModule]
 })

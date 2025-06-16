@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   selector: 'app-information-form',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './information-form.component.html'
+  templateUrl: './information-form.component.html',
+  styleUrl: './information-form.component.scss'
 })
 export class InformationFormComponent implements OnInit {
   form = this.fb.group({

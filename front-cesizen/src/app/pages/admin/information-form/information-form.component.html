@@ -1,20 +1,41 @@
-<h2>{{ isEdit ? 'Modifier' : 'Créer' }} une page d'information</h2>
+<div class="form-container">
+  <h2>{{ isEdit ? 'Modifier' : 'Créer' }} une page d'information</h2>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>
-    Titre :
-    <input formControlName="title" />
-  </label>
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="title">Titre :</label>
+        <input
+          id="title"
+          formControlName="title"
+          type="text"
+          placeholder="Entrez le titre de la page"
+        />
+      </div>
 
-  <label>
-    Slug :
-    <input formControlName="slug" />
-  </label>
+      <div class="form-group">
+        <label for="slug">Slug :</label>
+        <input
+          id="slug"
+          formControlName="slug"
+          type="text"
+          placeholder="url-de-la-page"
+        />
+      </div>
 
-  <label>
-    Contenu :
-    <textarea formControlName="content" rows="10"></textarea>
-  </label>
+      <div class="form-group">
+        <label for="content">Contenu :</label>
+        <textarea
+          id="content"
+          formControlName="content"
+          rows="10"
+          placeholder="Rédigez le contenu de votre page d'information..."
+        ></textarea>
+      </div>
 
-  <button type="submit">{{ isEdit ? 'Mettre à jour' : 'Créer' }}</button>
-</form>
+      <button type="submit" class="submit-btn">
+        {{ isEdit ? 'Mettre à jour' : 'Créer' }}
+      </button>
+    </form>
+  </div>
+</div>

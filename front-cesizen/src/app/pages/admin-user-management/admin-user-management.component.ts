@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-user-management',
   templateUrl: './admin-user-management.component.html',
+  styleUrl: './admin-user-management.component.scss',
   standalone: true,
-  imports: []
+  imports: [CommonModule]
 })
 export class AdminUserManagementComponent implements OnInit {
   users: any[] = [];
   message = '';
   error = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -25,8 +28,11 @@ export class AdminUserManagementComponent implements OnInit {
     });
   }
 
+  onCreateUser(){
+    this.router.navigate(['/admin/create-users']);
+  }
   onChangeRole(user: any) {
-    const newRole = user.role === 'admin' ? 'user' : 'admin';
+    const newRole = user.role.name === 'admin' ? 'user' : 'admin';
     this.authService.updateUserRole(user.id, newRole).subscribe({
       next: () => {
         user.role = newRole;

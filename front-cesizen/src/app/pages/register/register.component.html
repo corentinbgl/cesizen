@@ -1,26 +1,87 @@
-<h1>Inscription</h1>
+<div class="register-container">
+  <div class="register-card">
+    <h1>Inscription</h1>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>Email :
-    <input formControlName="email" />
-  </label>
-  @if(form.get('email')?.touched && form.get('email')?.invalid){
-    <div style="color: red">
-      @if(form.get('email')?.errors?.['required']){
-        <div>L'adresse email est requise.</div>
-      }
-      @if(form.get('email')?.errors?.['email']){
-        <div>Veuillez entrer une adresse email valide.</div>
-      }
-    </div>
-  }
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form">
+      <!-- Champ Email -->
+      <div class="form-group"
+           [class.has-error]="form.get('email')?.touched && form.get('email')?.invalid"
+           [class.has-success]="form.get('email')?.touched && form.get('email')?.valid">
+        <label for="email">Email :</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="votre@email.com"
+          autocomplete="email"
+        />
 
-  <label>Mot de passe :
-    <input type="password" formControlName="password" />
-  </label>
+        @if(form.get('email')?.touched && form.get('email')?.invalid){
+          <div class="validation-errors">
+            @if(form.get('email')?.errors?.['required']){
+              <div class="error-item">
+                L'adresse email est requise.
+              </div>
+            }
+            @if(form.get('email')?.errors?.['email']){
+              <div class="error-item">
+                Veuillez entrer une adresse email valide.
+              </div>
+            }
+          </div>
+        }
+      </div>
 
-  <button type="submit">S'inscrire</button>
-</form>
+      <!-- Champ Mot de passe -->
+      <div class="form-group"
+           [class.has-error]="form.get('password')?.touched && form.get('password')?.invalid"
+           [class.has-success]="form.get('password')?.touched && form.get('password')?.valid">
+        <label for="password">Mot de passe :</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+        />
 
-<p *ngIf="message" style="color: green;">{{ message }}</p>
-<p *ngIf="error" style="color: red;">{{ error }}</p>
+        @if(form.get('password')?.touched && form.get('password')?.invalid){
+          <div class="validation-errors">
+            @if(form.get('password')?.errors?.['required']){
+              <div class="error-item">
+                Le mot de passe est requis.
+              </div>
+            }
+            @if(form.get('password')?.errors?.['minlength']){
+              <div class="error-item">
+                Le mot de passe doit contenir au moins 6 caractères.
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Bouton de soumission -->
+      <button
+        type="submit"
+        class="register-btn"
+        [disabled]="form.invalid"
+      >
+        S'inscrire
+      </button>
+    </form>
+
+    <!-- Messages de succès et d'erreur -->
+    @if(message) {
+      <div class="success-message">
+        {{ message }}
+      </div>
+    }
+
+    @if(error) {
+      <div class="error-message">
+        {{ error }}
+      </div>
+    }
+  </div>
+</div>

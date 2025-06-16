@@ -11,7 +11,17 @@ model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
   password String
-  role String @default("user")
+  role Role? @relation(fields: [roleId], references: [id])
+  roleId Int?
+
+  logs  Log[]
+}
+
+model Role {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  users User[]
 }
 
 model Information {
@@ -28,5 +38,15 @@ model StressEvent {
   label    String
   points   Int
 }
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  message   String
+  createdAt DateTime @default(now())
+}
+
 
 
