@@ -34,8 +34,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       include: { role: true }
     });
 
-    console.log(user);
-
     if (!user) {
       res.status(404).json({ message: 'Utilisateur non trouvé' });
       return;
