@@ -37,4 +37,4 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm test # <--- Ce script doit se terminer !
+      - run: cd front-cesizen && npm test # <--- Ce script doit se terminer !
