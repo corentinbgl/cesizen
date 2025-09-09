@@ -1,0 +1,21 @@
+name: CI Frontend
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front-cesizen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm test
