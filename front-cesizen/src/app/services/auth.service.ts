@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { deleteAccount } from '../../../../back-cesizen/src/controllers/auth.controller';
 
 @Injectable({
   providedIn: 'root'

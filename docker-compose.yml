@@ -1,0 +1,12 @@
+services:
+  backend:
+    build: ./back-cesizen
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build: ./front-cesizen
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
