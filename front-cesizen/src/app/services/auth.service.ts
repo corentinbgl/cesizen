@@ -57,6 +57,7 @@ export class AuthService {
   }
 
   updatePassword(newPassword: string): Observable<any>{
+    console.log(newPassword);
     return this.http.put(`${this.apiUrl}/update-password`, { newPassword }, {
       headers: { Authorization: `Bearer ${this.getToken()}` }
     })
