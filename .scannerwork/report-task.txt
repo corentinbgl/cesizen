@@ -1,0 +1,6 @@
+projectKey=cesizen
+serverUrl=http://localhost:9000
+serverVersion=25.10.0.114319
+dashboardUrl=http://localhost:9000/dashboard?id=cesizen
+ceTaskId=0ae37d1c-58df-4499-aec0-2df8a61b156c
+ceTaskUrl=http://localhost:9000/api/ce/task?id=0ae37d1c-58df-4499-aec0-2df8a61b156c

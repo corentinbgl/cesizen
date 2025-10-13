@@ -1,0 +1,156 @@
+name: cesizen
+services:
+  # ---------------------- DB applicative ----------------------
+  db:
+    image: postgres:16
+    container_name: cesizen-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cesizen
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cesizen"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    restart: unless-stopped
+    networks: [cesi-network]
+
+  # ---------------------- API (Nest/Node) ----------------------
+  api:
+    build:
+      context: ./back-cesizen
+    container_name: cesizen-api
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/cesizen?schema=public
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./back-cesizen:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npm install && npx prisma generate && npm run start:dev"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    networks: [cesi-network]
+
+  # ---------------------- Front (Angular) ----------------------
+  web:
+    build:
+      context: ./front-cesizen
+      dockerfile: Dockerfile.web
+    container_name: cesizen-web
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./front-cesizen:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    command: sh -c "npm install && npm start"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:4200 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    networks: [cesi-network]
+
+  # ---------------------- SonarQube (qualité code) ----------------------
+  db-sonar:
+    image: postgres:15
+    container_name: db-sonar
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonarqube
+    volumes:
+      - db_sonar_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sonar -d sonarqube"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    restart: unless-stopped
+    networks: [cesi-network]
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://db-sonar:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true" # facilite l'exécution en local
+    depends_on:
+      db-sonar:
+        condition: service_healthy
+    volumes:
+      - sonar_data:/opt/sonarqube/data
+      - sonar_extensions:/opt/sonarqube/extensions
+      - sonar_logs:/opt/sonarqube/logs
+    restart: unless-stopped
+    networks: [cesi-network]
+
+  # ---------------------- Monitoring (cAdvisor + Prometheus + Grafana) ----------------------
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
+    networks: [cesi-network]
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - cadvisor
+    restart: unless-stopped
+    networks: [cesi-network]
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    networks: [cesi-network]
+
+networks:
+  cesi-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+  db_sonar_data:
+  sonar_data:
+  sonar_extensions:
+  sonar_logs:
